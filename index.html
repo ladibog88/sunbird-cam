@@ -452,7 +452,7 @@
         setLive();
       });
       hls.on(Hls.Events.ERROR, (_, data) => {
-        if (data.fatal) { setOffline(); setTimeout(initPlayer, 10000); }
+        if (data.fatal) { setOffline(); hls.destroy(); setTimeout(initPlayer, 3000); }
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       // Safari native HLS

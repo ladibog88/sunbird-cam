@@ -262,6 +262,70 @@
     @media (max-width: 520px) {
       .info-grid { grid-template-columns: 1fr; }
     }
+
+    /* Highlights */
+    .highlights {
+      margin-top: 2.5rem;
+      animation: fadeUp 1s ease 0.65s both;
+    }
+
+    .highlights-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .highlights-header .eyebrow {
+      margin-bottom: 0.3rem;
+    }
+
+    .highlights-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--cream);
+    }
+
+    .shorts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .short-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .short-wrap {
+      position: relative;
+      padding-top: 177.78%;
+      background: #000;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.15);
+    }
+
+    .short-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .short-caption {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 520px) {
+      .shorts-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -314,6 +378,28 @@
       <p class="value">~16–19 days
         <small>After hatching</small>
       </p>
+    </div>
+  </div>
+
+  <div class="highlights">
+    <div class="highlights-header">
+      <p class="eyebrow">Highlights from today</p>
+      <p class="highlights-title">Moments worth replaying</p>
+      <div class="divider"><span class="divider-icon">🌿</span></div>
+    </div>
+    <div class="shorts-grid">
+      <div class="short-card">
+        <div class="short-wrap">
+          <iframe src="https://www.youtube.com/embed/1bCSKoQ_oAE" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <p class="short-caption">Checking her work in the morning</p>
+      </div>
+      <div class="short-card">
+        <div class="short-wrap">
+          <iframe src="https://www.youtube.com/embed/0XtvYkrG_ww" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <p class="short-caption">Flap flap hover hover</p>
+      </div>
     </div>
   </div>
 

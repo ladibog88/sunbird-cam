@@ -1,0 +1,24 @@
+logLevel: info
+logDestinations: [stdout]
+
+rtsp: false
+rtmp: true
+rtmpAddress: :1935
+rtmpEncryption: "no"
+hls: true
+hlsAddress: :8888
+hlsAllowOrigins: ['*']
+hlsAlwaysRemux: true
+hlsVariant: lowLatency
+hlsSegmentCount: 7
+hlsSegmentDuration: 1s
+hlsPartDuration: 200ms
+hlsSegmentMaxSize: 50M
+webrtc: false
+srt: false
+
+pathDefaults:
+  source: publisher
+
+paths:
+  sunbirds:

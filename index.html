@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sunbird Nest Cam · Singapore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep: #1a2e1a;
+      --green-mid: #2d4a2d;
+      --gold: #c9a84c;
+      --gold-light: #e8cc7a;
+      --cream: #f5f0e8;
+      --text-light: #d4cfc4;
+      --text-muted: #8a8678;
+    }
+
+    body {
+      background-color: var(--green-deep);
+      color: var(--cream);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle leaf texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(45,74,45,0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(26,46,26,0.6) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* Gold divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem auto;
+      max-width: 320px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+    .divider-icon {
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    /* Video player */
+    .player-wrap {
+      position: relative;
+      background: #000;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.2);
+      animation: fadeUp 0.9s ease 0.2s both;
+    }
+
+    .player-wrap::before {
+      content: '';
+      display: block;
+      padding-top: 56.25%; /* 16:9 */
+    }
+
+    video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Offline overlay */
+    .offline-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10,20,10,0.85);
+      gap: 0.75rem;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    .offline-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .offline-overlay .bird-icon {
+      font-size: 2.5rem;
+      animation: sway 3s ease-in-out infinite;
+    }
+    .offline-overlay p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* Status bar */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+      padding: 0 0.25rem;
+      animation: fadeUp 1s ease 0.35s both;
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #5a9e5a;
+      animation: pulse 2s ease infinite;
+    }
+    .live-dot.offline { background: #666; animation: none; }
+
+    .location-tag {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* Info section */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      margin-top: 2.5rem;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 4px;
+      overflow: hidden;
+      animation: fadeUp 1s ease 0.5s both;
+    }
+
+    .info-card {
+      background: rgba(26,46,26,0.7);
+      padding: 1.4rem 1.6rem;
+    }
+
+    .info-card .label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .info-card .value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--cream);
+      line-height: 1.4;
+    }
+
+    .info-card .value small {
+      display: block;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+      font-style: normal;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      animation: fadeUp 1s ease 0.6s both;
+    }
+
+    /* Animations */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.85); }
+    }
+    @keyframes sway {
+      0%, 100% { transform: rotate(-5deg); }
+      50%       { transform: rotate(5deg); }
+    }
+
+    @media (max-width: 520px) {
+      .info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <p class="eyebrow">Live · Singapore</p>
+    <h1>Olive-backed <em>Sunbird</em><br>Nest Cam</h1>
+    <p class="subtitle">Cinnyris jugularis · Urban nature, unscripted</p>
+    <div class="divider"><span class="divider-icon">🌿</span></div>
+  </header>
+
+  <div class="player-wrap">
+    <video id="video" autoplay muted playsinline controls></video>
+    <div class="offline-overlay" id="offlineOverlay">
+      <span class="bird-icon">🐦</span>
+      <p>Stream is currently offline</p>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div class="live-badge">
+      <span class="live-dot" id="liveDot"></span>
+      <span id="liveLabel">Connecting…</span>
+    </div>
+    <span class="location-tag">📍 Singapore · Ledge nest</span>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <p class="label">Species</p>
+      <p class="value">Olive-backed Sunbird
+        <small>One of Singapore's most common urban birds</small>
+      </p>
+    </div>
+    <div class="info-card">
+      <p class="label">Nest stage</p>
+      <p class="value" id="nestStage">Building
+        <small>Update this as the nest progresses</small>
+      </p>
+    </div>
+    <div class="info-card">
+      <p class="label">Incubation period</p>
+      <p class="value">~14 days
+        <small>After eggs are laid</small>
+      </p>
+    </div>
+    <div class="info-card">
+      <p class="label">Fledging</p>
+      <p class="value">~16–19 days
+        <small>After hatching</small>
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    A quiet window into urban nature · Refreshes automatically
+  </footer>
+
+</div>
+
+<script>
+  // ── CHANGE THIS to your MediaMTX HLS URL ──────────────────────────────────
+  // Local test:  http://localhost:8888/sunbirds/index.m3u8
+  // Public URL:  http://YOUR_PUBLIC_IP:8888/sunbirds/index.m3u8
+  const HLS_URL = 'https://3de12536140e47.lhr.life/sunbirds/index.m3u8';
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const video   = document.getElementById('video');
+  const dot     = document.getElementById('liveDot');
+  const label   = document.getElementById('liveLabel');
+  const overlay = document.getElementById('offlineOverlay');
+
+  function setLive() {
+    dot.classList.remove('offline');
+    label.textContent = 'Live';
+    overlay.classList.remove('visible');
+  }
+
+  function setOffline() {
+    dot.classList.add('offline');
+    label.textContent = 'Offline';
+    overlay.classList.add('visible');
+  }
+
+  function initPlayer() {
+    if (Hls.isSupported()) {
+      const hls = new Hls({ lowLatencyMode: true });
+      hls.loadSource(HLS_URL);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(() => {});
+        setLive();
+      });
+      hls.on(Hls.Events.ERROR, (_, data) => {
+        if (data.fatal) { setOffline(); setTimeout(initPlayer, 10000); }
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      // Safari native HLS
+      video.src = HLS_URL;
+      video.addEventListener('loadedmetadata', () => { video.play(); setLive(); });
+      video.addEventListener('error', () => { setOffline(); setTimeout(initPlayer, 10000); });
+    } else {
+      setOffline();
+    }
+  }
+
+  initPlayer();
+</script>
+</body>
+</html>

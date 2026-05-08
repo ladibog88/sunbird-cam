@@ -6,6 +6,8 @@
   <title>Sunbird Nest Cam · Singapore</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -189,6 +191,12 @@
       letter-spacing: 0.05em;
     }
 
+    .viewer-count {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
     /* Info section */
     .info-grid {
       display: grid;
@@ -351,6 +359,7 @@
       <span class="live-dot" id="liveDot"></span>
       <span id="liveLabel">Connecting…</span>
     </div>
+    <span class="viewer-count" id="viewerCount"></span>
     <span class="location-tag">📍 Singapore · Ledge nest</span>
   </div>
 
@@ -456,6 +465,27 @@
   }
 
   initPlayer();
+
+  // Viewer counter
+  firebase.initializeApp({
+    apiKey: "AIzaSyAEuT53KCw2giSW7eR0kH5VR1U_5hr7V_k",
+    authDomain: "sunbird-cam.firebaseapp.com",
+    databaseURL: "https://sunbird-cam-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "sunbird-cam",
+    storageBucket: "sunbird-cam.firebasestorage.app",
+    messagingSenderId: "595975460311",
+    appId: "1:595975460311:web:f0298334f40f4f095a2792"
+  });
+  const db = firebase.database();
+  const sessionId = Math.random().toString(36).substr(2, 9) + Date.now();
+  const viewerRef = db.ref('viewers/' + sessionId);
+  viewerRef.set(true);
+  viewerRef.onDisconnect().remove();
+  db.ref('viewers').on('value', (snap) => {
+    const n = snap.numChildren();
+    const el = document.getElementById('viewerCount');
+    el.textContent = n > 0 ? n + (n === 1 ? ' watching' : ' watching') : '';
+  });
 </script>
 </body>
 </html>

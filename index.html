@@ -19,6 +19,7 @@
       --cream: #f5f0e8;
       --text-light: #d4cfc4;
       --text-muted: #8a8678;
+      --nav-h: 48px;
     }
 
     body {
@@ -30,7 +31,6 @@
       overflow-x: hidden;
     }
 
-    /* Subtle leaf texture overlay */
     body::before {
       content: '';
       position: fixed;
@@ -42,6 +42,62 @@
       z-index: 0;
     }
 
+    /* ── Nav bar ────────────────────────── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(18, 30, 18, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.18);
+    }
+
+    .topnav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .topnav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.88rem;
+      color: var(--gold-light);
+      text-decoration: none;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .topnav-logo:hover { color: var(--cream); }
+
+    .topnav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .topnav-links::-webkit-scrollbar { display: none; }
+
+    .topnav-links a {
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .topnav-links a:hover { color: var(--gold); }
+
+    /* ── Container ──────────────────────── */
     .container {
       position: relative;
       z-index: 1;
@@ -50,11 +106,19 @@
       padding: 2.5rem 1.5rem 4rem;
     }
 
-    /* Header */
+    /* Sections that are anchor targets need room below the sticky nav */
+    .birds-section,
+    .facts-section,
+    .highlights {
+      scroll-margin-top: calc(var(--nav-h) + 16px);
+    }
+
+    /* ── Header ─────────────────────────── */
     header {
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       animation: fadeDown 0.8s ease both;
+      scroll-margin-top: calc(var(--nav-h) + 16px);
     }
 
     .eyebrow {
@@ -85,7 +149,6 @@
       letter-spacing: 0.08em;
     }
 
-    /* Gold divider */
     .divider {
       display: flex;
       align-items: center;
@@ -104,7 +167,108 @@
       font-size: 1rem;
     }
 
-    /* Video player */
+    /* ── Timeline ───────────────────────── */
+    .timeline-section {
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.9s ease 0.1s both;
+    }
+
+    .timeline-label {
+      text-align: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .timeline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: calc(1rem + 16px);
+      right: calc(1rem + 16px);
+      height: 1px;
+      background: rgba(201, 168, 76, 0.2);
+      z-index: 0;
+    }
+
+    .tl-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tl-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      background: var(--green-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .tl-step.active .tl-dot {
+      border: 2px solid var(--gold);
+      background: rgba(201, 168, 76, 0.12);
+      box-shadow: 0 0 14px rgba(201, 168, 76, 0.28);
+    }
+
+    .tl-step.done .tl-dot {
+      border-color: rgba(201, 168, 76, 0.5);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .tl-name {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .tl-step.active .tl-name { color: var(--gold); }
+    .tl-step.done .tl-name  { color: var(--gold-light); }
+
+    .tl-duration {
+      font-size: 0.58rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+      opacity: 0.65;
+    }
+
+    .tl-step.active .tl-duration { color: var(--gold); opacity: 0.8; }
+
+    .tl-here {
+      margin-top: 0.35rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+    }
+
+    .tl-step.active .tl-here { opacity: 1; }
+
+    /* ── Video player ───────────────────── */
     .player-wrap {
       position: relative;
       background: #000;
@@ -117,7 +281,7 @@
     .player-wrap::before {
       content: '';
       display: block;
-      padding-top: 56.25%; /* 16:9 */
+      padding-top: 56.25%;
     }
 
     video {
@@ -128,7 +292,6 @@
       object-fit: cover;
     }
 
-    /* Offline overlay */
     .offline-overlay {
       position: absolute;
       inset: 0;
@@ -157,7 +320,7 @@
       font-size: 1rem;
     }
 
-    /* Status bar */
+    /* ── Status bar ─────────────────────── */
     .status-bar {
       display: flex;
       align-items: center;
@@ -197,59 +360,322 @@
       letter-spacing: 0.1em;
     }
 
-    /* Info section */
-    .info-grid {
+    
+    /* ── Section heading ────────────────── */
+    .section-heading {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--cream);
+    }
+
+    /* ── Bird profiles ──────────────────── */
+    .birds-section {
+      margin-top: 2.5rem;
+      animation: fadeUp 1s ease 0.55s both;
+    }
+
+    .birds-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      margin-top: 2.5rem;
-      background: rgba(201,168,76,0.15);
-      border: 1px solid rgba(201,168,76,0.15);
+      gap: 1.5rem;
+    }
+
+    .bird-card {
+      background: rgba(26,46,26,0.7);
+      border: 1px solid rgba(201,168,76,0.18);
       border-radius: 4px;
       overflow: hidden;
-      animation: fadeUp 1s ease 0.5s both;
+      text-align: center;
     }
 
-    .info-card {
-      background: rgba(26,46,26,0.7);
-      padding: 1.4rem 1.6rem;
+    .bird-photo {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: rgba(45,74,45,0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      color: var(--text-muted);
     }
 
-    .info-card .label {
-      font-size: 0.65rem;
+    .bird-photo-icon {
+      font-size: 2.8rem;
+      opacity: 0.5;
+    }
+
+    .bird-photo-hint {
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    .bird-info {
+      padding: 1.25rem 1.4rem 1.35rem;
+    }
+
+    .bird-role {
+      font-size: 0.62rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.35rem;
     }
 
-    .info-card .value {
+    .bird-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1rem;
+      font-size: 1.25rem;
+      font-weight: 400;
       color: var(--cream);
+      margin-bottom: 0.8rem;
+    }
+
+    .bird-desc {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.7;
+      text-align: left;
+    }
+
+    /* ── Fun facts ──────────────────────── */
+    .facts-section {
+      margin-top: 2.5rem;
+      animation: fadeUp 1s ease 0.6s both;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .fact-card {
+      background: rgba(26,46,26,0.7);
+      padding: 1.2rem 1.4rem;
+    }
+
+    .fact-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+
+    .fact-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.92rem;
+      color: var(--gold-light);
+      margin-bottom: 0.35rem;
+      font-style: italic;
+    }
+
+    .fact-text {
+      font-size: 0.79rem;
+      color: var(--text-light);
+      line-height: 1.65;
+    }
+
+    /* ── Highlights ─────────────────────── */
+    .highlights {
+      margin-top: 2.5rem;
+      animation: fadeUp 1s ease 0.65s both;
+    }
+
+    .highlights-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .highlights-header .eyebrow { margin-bottom: 0.3rem; }
+
+    .highlights-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--cream);
+    }
+
+    /* Thumbnail card grid — 2 per row, click to open modal */
+    .hl-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .hl-card {
+      cursor: pointer;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(201, 168, 76, 0.15);
+      background: rgba(26, 46, 26, 0.7);
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hl-card:hover {
+      border-color: rgba(201, 168, 76, 0.45);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .hl-thumb {
+      position: relative;
+    }
+
+    .hl-thumb::before {
+      content: '';
+      display: block;
+      padding-top: 56.25%; /* 16:9 — landscape thumbnail */
+    }
+
+    .hl-thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hl-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+      transition: background 0.2s;
+    }
+
+    .hl-card:hover .hl-play { background: rgba(0,0,0,0.1); }
+
+    .hl-play-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(201, 168, 76, 0.88);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green-deep);
+      font-size: 1.1rem;
+      padding-left: 3px; /* optical centre for ▶ */
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .hl-card:hover .hl-play-icon {
+      transform: scale(1.1);
+      background: var(--gold);
+    }
+
+    .hl-info {
+      padding: 0.75rem 1rem 0.9rem;
+    }
+
+    .hl-day {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.25rem;
+    }
+
+    .hl-caption {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text-light);
       line-height: 1.4;
     }
 
-    .info-card .value small {
-      display: block;
-      font-family: 'Lato', sans-serif;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.2rem;
-      font-style: normal;
+    /* ── Video modal ────────────────────── */
+    .video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
     }
 
-    /* Footer */
+    .video-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 12, 5, 0.92);
+      cursor: pointer;
+    }
+
+    .video-modal-box {
+      position: relative;
+      z-index: 1;
+      width: min(360px, calc(100vw - 2rem));
+    }
+
+    .video-modal-close {
+      position: absolute;
+      top: -2.5rem;
+      right: 0;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      line-height: 1;
+      padding: 0.25rem;
+    }
+
+    .video-modal-close:hover { color: var(--gold); }
+
+    .video-modal-frame {
+      position: relative;
+      padding-top: 177.78%; /* 9:16 portrait for Shorts */
+      background: #000;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 16px 64px rgba(0,0,0,0.8), 0 0 0 1px rgba(201,168,76,0.3);
+    }
+
+    .video-modal-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ── Footer ─────────────────────────── */
     footer {
       text-align: center;
       margin-top: 3rem;
       font-size: 0.72rem;
       color: var(--text-muted);
       letter-spacing: 0.05em;
-      animation: fadeUp 1s ease 0.6s both;
+      animation: fadeUp 1s ease 0.7s both;
     }
 
-    /* Animations */
+    /* ── Animations ─────────────────────── */
     @keyframes fadeDown {
       from { opacity: 0; transform: translateY(-16px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -268,83 +694,72 @@
     }
 
     @media (max-width: 520px) {
-      .info-grid { grid-template-columns: 1fr; }
-    }
+      .info-grid   { grid-template-columns: 1fr; }
+      .birds-grid  { grid-template-columns: 1fr; }
+      .facts-grid  { grid-template-columns: 1fr; }
+      .hl-grid     { grid-template-columns: 1fr; }
 
-    /* Highlights */
-    .highlights {
-      margin-top: 2.5rem;
-      animation: fadeUp 1s ease 0.65s both;
-    }
+      .timeline { padding: 0 0.25rem; }
+      .tl-name  { font-size: 0.55rem; }
+      .tl-here  { display: none; }
 
-    .highlights-header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .highlights-header .eyebrow {
-      margin-bottom: 0.3rem;
-    }
-
-    .highlights-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      font-weight: 400;
-      color: var(--cream);
-    }
-
-    .shorts-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    .short-card {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .short-wrap {
-      position: relative;
-      padding-top: 177.78%;
-      background: #000;
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.15);
-    }
-
-    .short-wrap iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .short-caption {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 0.9rem;
-      color: var(--text-light);
-      text-align: center;
-      line-height: 1.4;
-    }
-
-    @media (max-width: 520px) {
-      .shorts-grid { grid-template-columns: 1fr; }
+      .topnav-links { gap: 1.25rem; }
     }
   </style>
 </head>
 <body>
+
+<!-- Sticky navigation -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="#top" class="topnav-logo">🌿 SunbeeCam</a>
+    <div class="topnav-links">
+      <a href="#meet-the-residents">Meet the Residents</a>
+      <a href="#fun-facts">Fun Facts</a>
+      <a href="#highlights">Daily Highlights</a>
+    </div>
+  </div>
+</nav>
+
 <div class="container">
 
-  <header>
+  <header id="top">
     <p class="eyebrow">Live · Singapore</p>
     <h1>Olive-backed <em>Sunbird</em><br>Nest Cam</h1>
     <p class="subtitle">Cinnyris jugularis · Urban nature, unscripted</p>
     <div class="divider"><span class="divider-icon">🌿</span></div>
   </header>
+
+  <!-- Nest timeline -->
+  <div class="timeline-section">
+    <p class="timeline-label">Where we are in the journey</p>
+    <div class="timeline">
+      <div class="tl-step active">
+        <div class="tl-dot">🪺</div>
+        <span class="tl-name">Nest<br>Building</span>
+        <span class="tl-duration">~7–10 days</span>
+        <span class="tl-here">▲ now</span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">🥚</div>
+        <span class="tl-name">Eggs<br>Laid</span>
+        <span class="tl-duration">1–3 eggs</span>
+        <span class="tl-here"></span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">🌡️</div>
+        <span class="tl-name">Incubating</span>
+        <span class="tl-duration">~14 days</span>
+        <span class="tl-here"></span>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">🐣</div>
+        <span class="tl-name">Hatching &amp;<br>Fledging</span>
+        <span class="tl-duration">~16–19 days</span>
+        <span class="tl-here"></span>
+      </div>
+    </div>
+  </div>
 
   <div class="player-wrap">
     <video id="video" autoplay muted playsinline controls></video>
@@ -363,52 +778,134 @@
     <span class="location-tag">📍 Singapore · Ledge nest</span>
   </div>
 
-  <div class="info-grid">
-    <div class="info-card">
-      <p class="label">Species</p>
-      <p class="value">Olive-backed Sunbird
-        <small>One of Singapore's most common urban birds</small>
-      </p>
+  
+
+  <!-- Meet the birds -->
+  <div class="birds-section" id="meet-the-residents">
+    <div class="section-heading">
+      <p class="eyebrow">The stars of the show</p>
+      <p class="section-title">Meet the Residents</p>
+      <div class="divider"><span class="divider-icon">🌿</span></div>
     </div>
-    <div class="info-card">
-      <p class="label">Nest stage</p>
-      <p class="value" id="nestStage">Building
-        <small>Materials are being added slowly</small>
-      </p>
-    </div>
-    <div class="info-card">
-      <p class="label">Incubation period</p>
-      <p class="value">~14 days
-        <small>After eggs are laid</small>
-      </p>
-    </div>
-    <div class="info-card">
-      <p class="label">Fledging</p>
-      <p class="value">~16–19 days
-        <small>After hatching</small>
-      </p>
+    <div class="birds-grid">
+
+      <div class="bird-card">
+        <img src="Sunbee.jpg" alt="Sunbee" style="width:100%;display:block;object-fit:cover;aspect-ratio:4/3;">
+        <div class="bird-info">
+          <p class="bird-role">Nest Builder · Female</p>
+          <p class="bird-name">Sunbee</p>
+          <p class="bird-desc">She's the architect, the interior designer, and the project manager - that's a strong working woman! Sunbee builds the entire nest herself, making up to 200 trips a day to collect spider silk, dried grass, and plant fibres. The spider silk is her superglue — it holds everything together and stretches as the chicks grow. She's at it all day, errrr day, and carrying the whole project on her tiny little wings. Absolute queen behavior. Go Sunbee Go!</p>
+        </div>
+      </div>
+
+      <div class="bird-card">
+        <img src="sunbob.jpg" alt="Sunbob" style="width:100%;display:block;object-fit:cover;aspect-ratio:4/3;">
+        <div class="bird-info">
+          <p class="bird-role">Cheerleader · Guard · Male</p>
+          <p class="bird-name">Sunbob</p>
+          <p class="bird-desc">Sunbob's job title is <em>Chief Cheerleader and Guard</em>, and he takes it very seriously - we all love a supportive king! He shows up regularly to check on Sunbee, sings a few enthusiastic cheep cheep notes, and puffs out his chest to remind the neighbourhood who's watching the perimeter. Not the one building the nest, but a 10/10 hypeman. Go support your queen and man that kingdom, Sunbob - you got this little guy. </p>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="highlights">
-    <div class="highlights-header">
-      <p class="eyebrow">Highlights from today</p>
-      <p class="highlights-title">Moments worth replaying</p>
+  <!-- Fun facts -->
+  <div class="facts-section" id="fun-facts">
+    <div class="section-heading">
+      <p class="eyebrow">Did you know?</p>
+      <p class="section-title">Fun Facts about Sunbirds</p>
       <div class="divider"><span class="divider-icon">🌿</span></div>
     </div>
-    <div class="shorts-grid">
-      <div class="short-card">
-        <div class="short-wrap">
-          <iframe src="https://www.youtube.com/embed/1bCSKoQ_oAE" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="short-caption">Checking her work in the morning</p>
+    <div class="facts-grid">
+
+      <div class="fact-card">
+        <p class="fact-eyebrow">01</p>
+        <p class="fact-title">Spider silk architect</p>
+        <p class="fact-text">The female builds the entire nest alone using spider silk, dried grass, bark strips, and plant fibres. The silk acts like nature's elastane - flexible, strong, and able to expand as the chicks grow.</p>
       </div>
-      <div class="short-card">
-        <div class="short-wrap">
-          <iframe src="https://www.youtube.com/embed/0XtvYkrG_ww" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="short-caption">Flap flap hover hover</p>
+
+      <div class="fact-card">
+        <p class="fact-eyebrow">02</p>
+        <p class="fact-title">No hovering, please</p>
+        <p class="fact-text">Unlike hummingbirds, sunbirds can't hover for long. They prefer to perch beside a flower to sip nectar.</p>
       </div>
+
+      <div class="fact-card">
+        <p class="fact-eyebrow">03</p>
+        <p class="fact-title">100 flowers a day</p>
+        <p class="fact-text">A single sunbird can visit up to 100 flowers daily, making them vital pollinators - especially for plants with long, tubular blossoms that most insects can't reach.</p>
+      </div>
+
+      <div class="fact-card">
+        <p class="fact-eyebrow">04</p>
+        <p class="fact-title">Speed builders</p>
+        <p class="fact-text">The whole adventure unfolds fast: nest takes ~7–10 days, incubation ~14 days, then fledging in just 16–19 days. Cradle to wings in about six weeks.</p>
+      </div>
+
+      <div class="fact-card">
+        <p class="fact-eyebrow">05</p>
+        <p class="fact-title">That iridescent chest</p>
+        <p class="fact-text">The male's throat shimmers green-purple-blue depending on the angle of light. It's not a pigment - it's structural colour, the same physics that makes soap bubbles shimmer. </p>
+      </div>
+
+      <div class="fact-card">
+        <p class="fact-eyebrow">06</p>
+        <p class="fact-title">Urban champions</p>
+        <p class="fact-text">Olive-backed sunbirds have thrived in Singapore's cities, nesting on balconies, lamp posts, garden arches, and reportedly even on moving vehicles. They are not deterred by humans at all.</p>
+      </div>
+
+      <div class="fact-card">
+        <p class="fact-eyebrow">07</p>
+        <p class="fact-title">Solo incubation</p>
+        <p class="fact-text">The female incubates the eggs alone, leaving only briefly to feed. The male guards the perimeter and sings. Division of labour, sunbird style. </p>
+      </div>
+
+      <div class="fact-card">
+        <p class="fact-eyebrow">08</p>
+        <p class="fact-title">Asia's answer to hummingbirds</p>
+        <p class="fact-text">Sunbirds fill the same ecological role in Asia and Africa that hummingbirds play in the Americas - long beaks, nectar-drinking, iridescent feathers - and they evolved this way completely independently.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Daily highlights — thumbnail cards, click to play in modal -->
+  <div class="highlights" id="highlights">
+    <div class="highlights-header">
+      <p class="eyebrow">Moments worth replaying</p>
+      <p class="highlights-title">Daily Highlights</p>
+      <div class="divider"><span class="divider-icon">🌿</span></div>
+    </div>
+
+    <div class="hl-grid">
+
+      <!-- Day 1 — update video ID, date, and caption as needed -->
+      <div class="hl-card" onclick="openVideo('aJeN317PvCA')">
+        <div class="hl-thumb">
+          <img src="https://img.youtube.com/vi/aJeN317PvCA/hqdefault.jpg" alt="Day 1 highlight">
+          <div class="hl-play"><span class="hl-play-icon">▶</span></div>
+        </div>
+        <div class="hl-info">
+          <p class="hl-day">Day 1 · 8 May 2026</p>
+          <p class="hl-caption">Adding more materials to make a strong nest</p>
+        </div>
+      </div>
+
+      <!-- Day 2 — update video ID, date, and caption as needed -->
+      <div class="hl-card" onclick="openVideo('Znw5QULOu_c')">
+        <div class="hl-thumb">
+          <img src="https://img.youtube.com/vi/Znw5QULOu_c/hqdefault.jpg" alt="Day 2 highlight">
+          <div class="hl-play"><span class="hl-play-icon">▶</span></div>
+        </div>
+        <div class="hl-info">
+          <p class="hl-day">Day 2 · 9 May 2026</p>
+          <p class="hl-caption">The nest survived last night's storm! Hurray!</p>
+        </div>
+      </div>
+
+      <!-- To add a new day, copy one hl-card block above and update the video ID, date, and caption -->
+
     </div>
   </div>
 
@@ -418,12 +915,20 @@
 
 </div>
 
+<!-- Video popup modal -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-backdrop" onclick="closeVideo()"></div>
+  <div class="video-modal-box">
+    <button class="video-modal-close" onclick="closeVideo()">✕</button>
+    <div class="video-modal-frame">
+      <iframe id="modalIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
 <script>
-  // ── CHANGE THIS to your MediaMTX HLS URL ──────────────────────────────────
-  // Local test:  http://localhost:8888/sunbirds/index.m3u8
-  // Public URL:  http://YOUR_PUBLIC_IP:8888/sunbirds/index.m3u8
+  // ── Live stream ──────────────────────────────────────────────────────────
   const HLS_URL = 'https://mediamtx-production-8796.up.railway.app/sunbirds/index.m3u8';
-  // ─────────────────────────────────────────────────────────────────────────
 
   const video   = document.getElementById('video');
   const dot     = document.getElementById('liveDot');
@@ -455,7 +960,6 @@
         if (data.fatal) { setOffline(); hls.destroy(); setTimeout(initPlayer, 3000); }
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Safari native HLS
       video.src = HLS_URL;
       video.addEventListener('loadedmetadata', () => { video.play(); setLive(); });
       video.addEventListener('error', () => { setOffline(); setTimeout(initPlayer, 10000); });
@@ -466,7 +970,7 @@
 
   initPlayer();
 
-  // Viewer counter
+  // ── Viewer counter ───────────────────────────────────────────────────────
   firebase.initializeApp({
     apiKey: "AIzaSyAEuT53KCw2giSW7eR0kH5VR1U_5hr7V_k",
     authDomain: "sunbird-cam.firebaseapp.com",
@@ -486,6 +990,22 @@
     const el = document.getElementById('viewerCount');
     el.textContent = n > 0 ? n + (n === 1 ? ' watching' : ' watching') : '';
   });
+
+  // ── Video modal ──────────────────────────────────────────────────────────
+  function openVideo(videoId) {
+    document.getElementById('modalIframe').src =
+      'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+    document.getElementById('videoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeVideo() {
+    document.getElementById('videoModal').classList.remove('open');
+    document.getElementById('modalIframe').src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
 </script>
 </body>
 </html>

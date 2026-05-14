@@ -608,6 +608,32 @@
       line-height: 1.4;
     }
 
+    /* Still-photo card variant */
+    .hl-still {
+      cursor: default;
+    }
+    .hl-still:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .hl-still-badge {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.18);
+    }
+    .hl-still-badge span {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.75);
+      background: rgba(0,0,0,0.35);
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+    }
+
     /* ── Video modal ────────────────────── */
     .video-modal {
       position: fixed;
@@ -890,7 +916,6 @@
 
     <div class="hl-grid">
 
-      <!-- Day 1 — update video ID, date, and caption as needed -->
       <div class="hl-card" onclick="openVideo('aJeN317PvCA')">
         <div class="hl-thumb">
           <img src="https://img.youtube.com/vi/aJeN317PvCA/hqdefault.jpg" alt="Day 1 highlight">
@@ -898,11 +923,10 @@
         </div>
         <div class="hl-info">
           <p class="hl-day">Day 1 · 8 May 2026</p>
-          <p class="hl-caption">Adding more materials to make a strong nest</p>
+          <p class="hl-caption">Day one and she means business — Sunbee arrives trip after trip, weaving the first strands of what will become home.</p>
         </div>
       </div>
 
-      <!-- Day 2 — update video ID, date, and caption as needed -->
       <div class="hl-card" onclick="openVideo('Znw5QULOu_c')">
         <div class="hl-thumb">
           <img src="https://img.youtube.com/vi/Znw5QULOu_c/hqdefault.jpg" alt="Day 2 highlight">
@@ -910,11 +934,53 @@
         </div>
         <div class="hl-info">
           <p class="hl-day">Day 2 · 9 May 2026</p>
-          <p class="hl-caption">The nest survived last night's storm! Hurray!</p>
+          <p class="hl-caption">A storm rolled through the night — but the nest held. Sunbee inspects, approves, and gets straight back to work. Unstoppable.</p>
         </div>
       </div>
 
-      <!-- To add a new day, copy one hl-card block above and update the video ID, date, and caption -->
+      <div class="hl-card" onclick="openVideo('969ZnRi_pLA')">
+        <div class="hl-thumb">
+          <img src="https://img.youtube.com/vi/969ZnRi_pLA/hqdefault.jpg" alt="Day 3 highlight">
+          <div class="hl-play"><span class="hl-play-icon">▶</span></div>
+        </div>
+        <div class="hl-info">
+          <p class="hl-day">Day 3 · 10 May 2026</p>
+          <p class="hl-caption">The pocket is forming. Up to 200 trips today alone — Sunbee is weaving, tucking, and pulling silk tighter with every visit. You can really see it coming together.</p>
+        </div>
+      </div>
+
+      <div class="hl-card" onclick="openVideo('WqB7KX1F1ig')">
+        <div class="hl-thumb">
+          <img src="https://img.youtube.com/vi/WqB7KX1F1ig/hqdefault.jpg" alt="Day 4 highlight">
+          <div class="hl-play"><span class="hl-play-icon">▶</span></div>
+        </div>
+        <div class="hl-info">
+          <p class="hl-day">Day 4 · 11 May 2026</p>
+          <p class="hl-caption">Still at it, still going strong. The nest looks beautiful — snug, sturdy, shaped just right. Sunbee, you absolute legend.</p>
+        </div>
+      </div>
+
+      <div class="hl-card" onclick="openVideo('DEwL9QgK29c')">
+        <div class="hl-thumb">
+          <img src="https://img.youtube.com/vi/DEwL9QgK29c/hqdefault.jpg" alt="Day 5 highlight">
+          <div class="hl-play"><span class="hl-play-icon">▶</span></div>
+        </div>
+        <div class="hl-info">
+          <p class="hl-day">Day 5 · 12 May 2026</p>
+          <p class="hl-caption">Something feels off. They keep hovering nearby, cheeping anxiously — but neither will land. What happened? What are they sensing?</p>
+        </div>
+      </div>
+
+      <div class="hl-card hl-still">
+        <div class="hl-thumb">
+          <img src="13%20May%20sunbirds.jpg" alt="Day 6 — nest on 13 May">
+          <div class="hl-still-badge"><span>Photo</span></div>
+        </div>
+        <div class="hl-info">
+          <p class="hl-day">Day 6 · 13 May 2026</p>
+          <p class="hl-caption">No visits today. The nest sits perfectly still, waiting. Where have Sunbee and Sunbob gone? We're watching and hoping for their return.</p>
+        </div>
+      </div>
 
     </div>
   </div>
